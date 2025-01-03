@@ -3,8 +3,8 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler, Mess
 import google.generativeai as genai
 
 
-TELEGRAM_BOT_TOKEN = "7948846729:AAH9_Rcgfw4yxp3jqfZN5Pknj-SWohyM3oI"
-genai.configure(api_key='AIzaSyBZU3Rd8yX_jr-y3BlVBH2QqxPh7faawZs')
+TELEGRAM_BOT_TOKEN = ""
+genai.configure(api_key='')
 
 user_states = {}
 
