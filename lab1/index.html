@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #nickname-container, #chat-container {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: none;
+        }
+        #nickname-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #nickname-container h1 {
+            margin-bottom: 20px;
+        }
+        #nickname-container input, button {
+            width: 35%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        #nickname-container button {
+            margin-top: 10px;
+            background: #0056b3;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #nickname-container button:hover {
+            background: #003d80;
+        }
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            border-bottom: 1px solid #ddd;
+        }
+        #messages li {
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        #messages li.system {
+            background: #e7f3ff;
+            color: #0056b3;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            padding: 10px;
+        }
+        form input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        form button {
+            background: #0056b3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background: #003d80;
+        }
+    </style>
+</head>
+<body>
+    <div id="nickname-container">
+        <h1>Введіть ваш нікнейм</h1>
+        <input id="nickname-input" placeholder="Ваш нікнейм" />
+        <button id="start-chat">Розпочати чат</button>
+    </div>
+    <div id="chat-container">
+        <ul id="messages"></ul>
+        <form id="form">
+            <input id="input" autocomplete="off" placeholder="Введіть повідомлення..." />
+            <button>Надіслати</button>
+        </form>
+    </div>
+
+    <script>
+        const socket = io();
+        const nicknameContainer = document.getElementById('nickname-container');
+        const chatContainer = document.getElementById('chat-container');
+        const nicknameInput = document.getElementById('nickname-input');
+        const startChatButton = document.getElementById('start-chat');
+        const form = document.getElementById('form');
+        const input = document.getElementById('input');
+        const messages = document.getElementById('messages');
+
+        let nickname = '';
+
+        startChatButton.addEventListener('click', () => {
+            nickname = nicknameInput.value.trim();
+            if (nickname) {
+                socket.emit('set nickname', nickname);
+                nicknameContainer.style.display = 'none';
+                chatContainer.style.display = 'block';
+            } else {
+                alert('Введіть нікнейм!');
+            }
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (input.value.trim()) {
+                socket.emit('chat message', input.value);
+                input.value = '';
+            }
+        });
+
+        socket.on('chat message', (data) => {
+            const item = document.createElement('li');
+            item.innerHTML = `<strong>${data.nickname}:</strong> ${data.msg}`;
+            messages.appendChild(item);
+            messages.scrollTop = messages.scrollHeight;
+        });
+
+        socket.on('user connected', (msg) => {
+            const item = document.createElement('li');
+            item.textContent = msg;
+            item.classList.add('system');
+            messages.appendChild(item);
+        });
+
+        socket.on('user disconnected', (msg) => {
+            const item = document.createElement('li');
+            item.textContent = msg;
+            item.classList.add('system');
+            messages.appendChild(item);
+        });
+    </script>
+</body>
+</html>
