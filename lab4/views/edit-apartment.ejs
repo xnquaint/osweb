@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редагувати квартиру</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Редагувати квартиру</h1>
+    <form action="/apartments/edit/<%= apartment._id %>" method="POST">
+        <label>Район: <input type="text" name="district" value="<%= apartment.district %>" required></label><br>
+        <label>Поверх: <input type="number" name="floor" value="<%= apartment.floor %>" required></label><br>
+        <label>Площа: <input type="number" name="area" value="<%= apartment.area %>" required></label><br>
+        <label>Кількість кімнат: <input type="number" name="rooms" value="<%= apartment.rooms %>" required></label><br>
+        <label>Інформація про власника: <input type="text" name="ownerInfo" value="<%= apartment.ownerInfo %>" required></label><br>
+        <label>Ціна: <input type="number" name="price" value="<%= apartment.price %>" required></label><br>
+        <button type="submit">Оновити</button>
+    </form>
+    <a href="/apartments">Назад</a>
+</body>
+</html>

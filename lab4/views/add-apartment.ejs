@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Додати квартиру</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Додати нову квартиру</h1>
+    <form action="/apartments" method="POST">
+        <label>Район: <input type="text" name="district" required></label><br>
+        <label>Поверх: <input type="number" name="floor" required></label><br>
+        <label>Площа: <input type="number" name="area" required></label><br>
+        <label>Кількість кімнат: <input type="number" name="rooms" required></label><br>
+        <label>Інформація про власника: <input type="text" name="ownerInfo" required></label><br>
+        <label>Ціна: <input type="number" name="price" required></label><br>
+        <button type="submit">Додати</button>
+    </form>
+    <a href="/apartments">Назад</a>
+</body>
+</html>

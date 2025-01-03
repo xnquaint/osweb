@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список Квартир</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Список Квартир</h1>
+    <a href="/apartments/add">Додати нову квартиру</a>
+    <ul>
+        <% apartments.forEach(apartment => { %>
+            <li>
+                <h2><%= apartment.district %> — <%= apartment.price %> грн</h2>
+                <p>Поверх: <%= apartment.floor %>, Площа: <%= apartment.area %> м², Кімнат: <%= apartment.rooms %></p>
+                <p>Власник: <%= apartment.ownerInfo %></p>
+                <form action="/apartments/delete/<%= apartment._id %>" method="POST">
+                    <button>Видалити</button>
+                </form>
+                <a href="/apartments/edit/<%= apartment._id %>">Редагувати</a>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>
